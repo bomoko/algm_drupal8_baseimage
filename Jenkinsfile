@@ -8,15 +8,6 @@
     DOCKER_PASSWORD = credentials('algmjenkins-dockerhub-password')
   }
   stages {
-    stage('Test stage') {
-      steps {
-        sh '''
-        echo $DOCKER_USERNAME
-        echo $DOCKER_PASSWORD
-        '''
-      }
-    }
-   /* Below are the default Denpal stages, we'll recreate these
     stage('Docker login') {
       steps {
         sh '''
@@ -24,6 +15,7 @@
         '''
       }
     }
+   /* Below are the default Denpal stages, we'll recreate these
     stage('Docker Build') {
       steps {
         sh '''
