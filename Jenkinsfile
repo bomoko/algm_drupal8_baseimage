@@ -33,7 +33,7 @@
         """
       }
     }
-    stage('Verification') {
+    stage('Verification') { //This stage needs to be extended - in particular, we should be running a basic site installation to ensure that this base image actually works
       steps {
         sh '''
         docker-compose exec -T cli drush status
