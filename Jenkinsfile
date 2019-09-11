@@ -7,9 +7,7 @@
     stage('Docker login') {
       steps {
         withCredentials([
-          string(credentialsId: 'algmjenkins-dockerhub-username', variable: 'DOCKER_USERNAME'),
-          string(credentialsId: 'algmjenkins-dockerhub-username', variable: 'DOCKER_USERNAME')
-          ]) {
+          usernamePassword(credentialsId: 'algmdockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                 sh '''
                     docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
                 '''
