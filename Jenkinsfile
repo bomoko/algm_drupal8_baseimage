@@ -4,14 +4,15 @@
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
   environment {
-    DOCKER_CREDS = credentials('amazeeiojenkins-dockerhub-password')
-    COMPOSE_PROJECT_NAME = "denpal-${BUILD_ID}"
+    DOCKER_USERNAME = credentials('amazeeiojenkins-dockerhub-username') //These are set in Jenkins itself
+    DOCKER_PASSWORD = credentials('amazeeiojenkins-dockerhub-password')
   }
   stages {
+   /* Below are the default Denpal stages, we'll recreate these
     stage('Docker login') {
       steps {
         sh '''
-        docker login --username amazeeiojenkins --password $DOCKER_CREDS
+        docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
         '''
       }
     }
@@ -66,5 +67,6 @@
         '''
       }
     }
+    */
   }
 }
