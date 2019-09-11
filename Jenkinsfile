@@ -15,7 +15,6 @@
         '''
       }
     }
-   /* Below are the default Denpal stages, we'll recreate these
     stage('Docker Build') {
       steps {
         sh '''
@@ -26,6 +25,7 @@
         '''
       }
     }
+   /* Below are the default Denpal stages, we'll recreate these
     stage('Waiting') {
       steps {
         sh """
