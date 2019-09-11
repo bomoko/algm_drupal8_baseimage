@@ -3,16 +3,17 @@
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
-  environment {
-    DOCKER_USERNAME = credentials('algmjenkins-dockerhub-username') //These are set in Jenkins itself
-    DOCKER_PASSWORD = credentials('algmjenkins-dockerhub-password')
-  }
   stages {
     stage('Docker login') {
       steps {
-        sh '''
-        docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-        '''
+        withCredentials([
+          string(credentialsId: 'algmjenkins-dockerhub-username', variable: 'DOCKER_USERNAME'),
+          string(credentialsId: 'algmjenkins-dockerhub-username', variable: 'DOCKER_USERNAME')
+          ]) {
+                sh '''
+                    docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+                '''
+          }
       }
     }
     stage('Docker Build') {
