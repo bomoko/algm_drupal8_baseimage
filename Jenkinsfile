@@ -4,10 +4,16 @@
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
   environment {
-    DOCKER_USERNAME = credentials('amazeeiojenkins-dockerhub-username') //These are set in Jenkins itself
-    DOCKER_PASSWORD = credentials('amazeeiojenkins-dockerhub-password')
+    DOCKER_USERNAME = credentials('algmjenkins-dockerhub-username') //These are set in Jenkins itself
+    DOCKER_PASSWORD = credentials('algmjenkins-dockerhub-password')
   }
   stages {
+    stage('Test stage') {
+      sh '''
+      echo $DOCKER_USERNAME
+      echo $DOCKER_PASSWORD
+      '''
+    }
    /* Below are the default Denpal stages, we'll recreate these
     stage('Docker login') {
       steps {
