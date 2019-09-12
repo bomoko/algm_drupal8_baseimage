@@ -1,4 +1,9 @@
+build: ## Build the container
+	docker-compose up -d --build
+	docker-compose exec cli composer install
 up:
-	COMPOSE_PROJECT_NAME=denpal docker-compose up -d --build
+	docker-compose up -d
 down:
-	COMPOSE_PROJECT_NAME=denpal docker-compose down
+	docker-compose down
+stop:
+	docker-compose stop

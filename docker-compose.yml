@@ -2,8 +2,8 @@ version: '2.3'
 
 x-lagoon-project:
   # Lagoon project name (leave `&lagoon-project` when you edit this)
-  &lagoon-project denpal
-  &cli-image denpal
+  &lagoon-project drupal8
+  &cli-image drupal8
 
 x-volumes:
   &default-volumes
@@ -18,7 +18,7 @@ x-environment:
   &default-environment
     LAGOON_PROJECT: *lagoon-project
     # Route that should be used locally, if you are using pygmy, this route *must* end with .docker.amazee.io
-    LAGOON_ROUTE: http://denpal.docker.amazee.io
+    LAGOON_ROUTE: http://drupal8.docker.amazee.io
     # Uncomment if you like to have the system behave like in production
     #LAGOON_ENVIRONMENT_TYPE: production
     # Uncomment to enable xdebug and then restart via `docker-compose up -d`
@@ -35,7 +35,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.cli
-    image: denpal
+    image: drupal8
     labels:
       # Lagoon Labels
       lagoon.type: cli-persistent
@@ -53,8 +53,8 @@ services:
       context: .
       dockerfile: Dockerfile.nginx
       args:
-        CLI_IMAGE: denpal
-    image: denpal_nginx
+        CLI_IMAGE: drupal8
+    image: drupal8_nginx
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.persistent: /app/web/sites/default/files/ # define where the persistent storage should be mounted too
@@ -76,8 +76,8 @@ services:
       context: .
       dockerfile: Dockerfile.php
       args:
-        CLI_IMAGE: denpal
-    image: denpal_php
+        CLI_IMAGE: drupal8
+    image: drupal8_php
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.name: nginx # we want this service be part of the nginx pod in Lagoon
