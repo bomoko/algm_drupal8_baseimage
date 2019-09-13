@@ -3,6 +3,11 @@
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
+  triggers {
+    // This tells Jenkins to poll for changes in git instead of
+    // waiting for webhooks.
+    pollSCM('* * * * *')
+  }
   stages {
     stage('Docker login') {
       steps {
