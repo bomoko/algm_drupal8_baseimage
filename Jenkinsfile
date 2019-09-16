@@ -1,6 +1,6 @@
  pipeline {
   agent {
-    dockerfile {
+    docker {
       args '--tmpfs /.config'
     }
   }
