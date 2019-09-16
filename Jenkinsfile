@@ -1,6 +1,7 @@
  pipeline {
   agent {
     docker {
+      image cli
       args '--tmpfs /.config'
     }
   }
