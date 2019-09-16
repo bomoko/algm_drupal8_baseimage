@@ -1,5 +1,9 @@
  pipeline {
-  agent any
+  agent {
+    dockerfile {
+      args '--tmpfs /.config'
+    }
+  }
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
@@ -70,7 +74,7 @@
         docker-compose exec cli drush site-install --verbose config_installer config_installer_sync_configure_form.sync_directory=/config/sync/ --yes
         docker-compose exec cli drush cr
         docker-compose exec cli drush uli
-        
+
         docker-compose down
         '''
       }
