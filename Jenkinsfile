@@ -1,10 +1,5 @@
  pipeline {
-  agent {
-    docker {
-      image 'amazeeio/php:7.2-cli-drupal'
-      args '--tmpfs /.config'
-    }
-  }
+  agent any
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
