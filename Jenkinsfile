@@ -29,6 +29,18 @@
         '''
       }
     }
+    stage('Docker Push') {
+    steps {
+
+
+        sh '''
+        #variables we need
+        #tag - if any
+        #Branch
+
+        '''
+      }
+    }
    /* Below are the default Denpal stages, we'll recreate these
     stage('Waiting') {
       steps {
