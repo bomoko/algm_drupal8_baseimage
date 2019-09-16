@@ -53,6 +53,7 @@
         """
       }
     }
+    */
     stage('Verification') { //This stage needs to be extended - in particular, we should be running a basic site installation to ensure that this base image actually works
       steps {
         sh '''
@@ -64,10 +65,17 @@
           echo "FAIL"
           /bin/false
         fi
+
+        // Install drupal db.
+        docker-compose exec cli drush site-install --verbose config_installer config_installer_sync_configure_form.sync_directory=/config/sync/ --yes
+        docker-compose exec cli drush cr
+        docker-compose exec cli drush uli
+        
         docker-compose down
         '''
       }
     }
+    /*
     stage('Docker Push') {
       steps {
         sh '''
