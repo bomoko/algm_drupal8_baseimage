@@ -22,9 +22,11 @@
     stage('Docker Build') {
       steps {
         sh '''
-        if [ ! docker network inspect = "amazeeio-network" ]; then
-          docker network create amazeeio-network || true
-        fi
+        if [ ! "$(docker network inspect amazeeio-network | grep amazeeio-network)" ]; then
+      		docker network create amazeeio-network || true
+      	else
+        	echo "amazeeio-network network exists."
+      	fi
         docker-compose config -q
         docker-compose down
         docker-compose up -d --build "$@"
