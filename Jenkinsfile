@@ -29,7 +29,7 @@
       	fi
         docker-compose config -q
         docker-compose down
-        docker-compose up -d --build "$@"
+        DOCKER_REPO=algmprivsecops BUILDTAG=latest docker-compose up -d --build
         '''
       }
     }
