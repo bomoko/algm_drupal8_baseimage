@@ -1,7 +1,7 @@
  pipeline {
   agent {
     docker {
-      image 'cli'
+      image 'amazeeio/php:7.2-cli-drupal'
       args '--tmpfs /.config'
     }
   }
