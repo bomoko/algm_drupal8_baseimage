@@ -1,12 +1,10 @@
+SHELL := /bin/bash
+
 docker_push = docker push $(DOCKER_TARGET_REPO)/$(2) | cat  
 
-tagged_image_list = `docker images | grep $(BUILD_NUMBER) | cut -d" " -f1 | cat`
+tagged_image_list := $(shell docker images | grep $(BUILD_NUMBER) | cut -d" " -f1 | cat)
 
-#we want a couple things in our tag list
-#if this is a tagged git repo, we want the tag as a tag
-#if it's the development branch, we want to tag it as "latest"
-#if it's anything else, we use the branch
-tag_list = radderone
+git_tag_for_current_branch := $(shell git tag --points-at) #will be non-empty if HEAD is tagged
 
 build: ## Build the container
 	docker-compose up -d --build
@@ -18,17 +16,21 @@ down:
 stop:
 	docker-compose stop
 
+.PHONY: images_publish
 images_publish:
 	TAGSFORBRANCH=$(GIT_BRANCH); \
 	if [ $(GIT_BRANCH) = "develop" ]; then \
 		TAGSFORBRANCH="latest";\
 	fi; \
-	if [ "istaggedcheck" = "shouldgohere" ]; then \
-		TAGSFORBRANCH="$$TAGSFORBRANCH tagnamehere";\
-	fi;\
-	for repository in $(shell docker images | grep $(BUILD_NUMBER) | cut -d" " -f1 | cat); do \
-		for tagname in $$TAGSFORBRANCH $(tag_list); do \
+	for repository in $(tagged_image_list); do \
+		for tagname in $$TAGSFORBRANCH $(git_tag_for_current_branch); do \
 			docker tag $$repository:$$BUILD_NUMBER $$repository:$$tagname; \
 			docker push $$repository:$$tagname; \
-		done \
+		done; \
+	done
+
+.PHONY: images_remove
+images_remove:
+	for repository in $(tagged_image_list); do \
+		docker rmi $$repository:$$BUILD_NUMBER -f; \
 	done
