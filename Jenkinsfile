@@ -38,13 +38,12 @@
       }
     }
     stage('Docker clean images') {
-        steps {
-            sh '''
-            make images_remove
-            '''
-          }
-        }
-       */
+      steps {
+        sh '''
+        make images_remove
+        '''
+      }
+    }
    /* Below are the default Denpal stages, we'll recreate these
     stage('Waiting') {
       steps {
