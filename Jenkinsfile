@@ -18,7 +18,8 @@
             sh '''
                 git --version
                 git status
-                git tag
+                git tag --points-at
+                echo "done here"
             '''
         }
     }
