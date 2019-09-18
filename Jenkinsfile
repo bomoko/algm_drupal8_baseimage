@@ -13,17 +13,6 @@
   }
 
   stages {
-    stage('Test git') {
-        steps {
-            sh '''
-                git --version
-                git status
-                git tag --points-at
-                echo "done here"
-            '''
-        }
-    }
-  /*
     stage('Docker login') {
       steps {
         withCredentials([
