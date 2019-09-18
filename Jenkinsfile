@@ -32,7 +32,7 @@
     stage('Docker Push') {
     steps {
         sh '''
-        make images_push
+        make images_publish
         '''
       }
     }
