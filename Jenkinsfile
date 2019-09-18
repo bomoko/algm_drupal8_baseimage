@@ -18,6 +18,7 @@
             sh '''
                 git --version
                 git status
+                make images_echo_variables
             '''
         }
     }
