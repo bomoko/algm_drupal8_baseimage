@@ -11,7 +11,17 @@
     // waiting for webhooks.
     pollSCM('* * * * *')
   }
+
   stages {
+    stage('Test git') {
+        steps {
+            sh '''
+                git --version
+                git status
+            '''
+        }
+    }
+  /*
     stage('Docker login') {
       steps {
         withCredentials([
@@ -43,6 +53,7 @@
             '''
           }
         }
+       */
    /* Below are the default Denpal stages, we'll recreate these
     stage('Waiting') {
       steps {
