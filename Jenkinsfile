@@ -19,8 +19,6 @@
                 git --version
                 git status
                 git tag --points-at
-                git tag -l --points-at HEAD
-                git desribe --tags
                 echo "done here"
             '''
         }
