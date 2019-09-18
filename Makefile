@@ -42,7 +42,7 @@ images_publish: images_set_variables
 	for repository in $(tagged_image_list); do \
 		for tagname in $$TAGSFORBRANCH $(git_tag_for_current_branch); do \
 			echo "pushing " $$repository:$$tagname; \
-			docker tag $$repository:$$BUILD_NUMBER $$repository:$$tagname; \
+			docker tag $$repository:$(docker_build_tag) $$repository:$$tagname; \
 			docker push $$repository:$$tagname; \
 		done; \
 	done
