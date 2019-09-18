@@ -1,5 +1,8 @@
  pipeline {
   agent any
+  environment {
+   DOCKER_REPO = 'algmprivsecops'
+  }
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
