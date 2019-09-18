@@ -35,7 +35,7 @@ images_build: images_set_variables
 # This target will iterate through all images and tags, pushing up versions of all with approriate tags
 .PHONY: images_publish
 images_publish: images_set_variables
-	TAGSFORBRANCH=$(GIT_BRANCH); \
+	TAGSFORBRANCH=default; \
 	if [ $(GIT_BRANCH) = "develop" ]; then \
 		TAGSFORBRANCH="latest";\
 	fi; \
