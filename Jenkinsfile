@@ -1,5 +1,8 @@
  pipeline {
   agent any
+  environment {
+   DOCKER_REPO = 'algmprivsecops'
+  }
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
   }
@@ -8,6 +11,7 @@
     // waiting for webhooks.
     pollSCM('* * * * *')
   }
+
   stages {
     stage('Docker login') {
       steps {
@@ -22,10 +26,21 @@
     stage('Docker Build') {
       steps {
         sh '''
-        docker network create amazeeio-network || true
-        docker-compose config -q
-        docker-compose down
-        docker-compose up -d --build "$@"
+        make images_build
+        '''
+      }
+    }
+    stage('Docker Push') {
+    steps {
+        sh '''
+        make images_publish
+        '''
+      }
+    }
+    stage('Docker clean images') {
+      steps {
+        sh '''
+        make images_remove
         '''
       }
     }

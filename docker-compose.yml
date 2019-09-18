@@ -3,7 +3,7 @@ version: '2.3'
 x-lagoon-project:
   # Lagoon project name (leave `&lagoon-project` when you edit this)
   &lagoon-project drupal8
-  &cli-image drupal8
+  &cli-image $DOCKER_REPO/drupal8:$BUILDTAG
 
 x-volumes:
   &default-volumes
@@ -35,7 +35,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.cli
-    image: drupal8
+    image: $DOCKER_REPO/drupal8:$BUILDTAG
     labels:
       # Lagoon Labels
       lagoon.type: cli-persistent
@@ -53,8 +53,8 @@ services:
       context: .
       dockerfile: Dockerfile.nginx
       args:
-        CLI_IMAGE: drupal8
-    image: drupal8_nginx
+        CLI_IMAGE: $DOCKER_REPO/drupal8:$BUILDTAG
+    image: $DOCKER_REPO/drupal8_nginx:$BUILDTAG
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.persistent: /app/web/sites/default/files/ # define where the persistent storage should be mounted too
@@ -76,8 +76,8 @@ services:
       context: .
       dockerfile: Dockerfile.php
       args:
-        CLI_IMAGE: drupal8
-    image: drupal8_php
+        CLI_IMAGE: $DOCKER_REPO/drupal8:$BUILDTAG
+    image: $DOCKER_REPO/drupal8_php:$BUILDTAG
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.name: nginx # we want this service be part of the nginx pod in Lagoon
