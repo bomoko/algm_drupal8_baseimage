@@ -23,12 +23,17 @@
         "drush/drush": "~8.0",
         "drupal/console": "~1.0",
         "drupal/config_installer": "1.x-dev",
-        "drupal/redis": "^1.0",
+        "drupal/redis": "^1.2",
         "drupal/poll": "1.2",
         "drupal/search_api": "^1.6",
         "drupal/search_api_solr": "^1.2",
         "drupal/varnish_purge": "^1.10",
-        "drupal/purge": "^3.0"
+        "drupal/purge": "^3.0",
+        "drupal/admin_toolbar": "^1.27",
+        "drupal/cdn": "^3.3",
+        "drupal/password_policy": "^3.0@alpha",
+        "drupal/pathauto": "^1.4",
+        "drupal/ultimate_cron": "^2.0@alpha"
     },
     "require-dev": {
         "behat/mink": "~1.7",
@@ -81,4 +86,3 @@
         }
     }
 }
-

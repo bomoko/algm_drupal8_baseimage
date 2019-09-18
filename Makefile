@@ -30,7 +30,22 @@ images_echo_variables: images_set_variables
 # This target will build out the images, passing the correct environment vars to fill out repo and tags
 .PHONY: images_build
 images_build: images_set_variables
-	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose build
+	docker network create amazeeio-network || true; \
+	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose up -d --build; \
+	docker-compose exec cli drush site-install --verbose config_installer config_installer_sync_configure_form.sync_directory=/app/config/sync/ --yes; \
+  docker-compose exec cli drush cr; \
+  docker-compose exec cli composer require drupal/admin_toolbar; \
+  docker-compose exec cli composer require drupal/cdn; \
+  docker-compose exec cli composer require drupal/password_policy; \
+  docker-compose exec cli composer require drupal/pathauto; \
+  docker-compose exec cli composer require drupal/ultimate_cron; \
+  docker-compose exec cli composer require drupal/redis; \
+  docker-compose exec cli drush en admin_toolbar cdn password_policy pathauto ultimate_cron redis -y
+
+.PHONY: images_test
+images_test: images_set_variables
+	docker-compose exec cli drush status; \
+	docker-compose exec cli drush status bootstrap | grep -q Successful;
 
 # This target will iterate through all images and tags, pushing up versions of all with approriate tags
 .PHONY: images_publish
@@ -50,6 +65,7 @@ images_publish: images_set_variables
 # Removes all images in this BUILD_NUMBER
 .PHONY: images_remove
 images_remove: images_set_variables
+	docker-compose down; \
 	for repository in $(tagged_image_list); do \
 		docker rmi $$repository:$(docker_build_tag) -f; \
 	done
