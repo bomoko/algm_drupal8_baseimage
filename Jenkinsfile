@@ -22,10 +22,7 @@
     stage('Docker Build') {
       steps {
         sh '''
-        docker network create amazeeio-network || true
-        docker-compose config -q
-        docker-compose down
-        docker-compose up -d --build "$@"
+        make images_build
         '''
       }
     }
