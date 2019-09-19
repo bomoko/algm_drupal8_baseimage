@@ -36,7 +36,7 @@ images_build: images_set_variables
 .PHONY: images_publish
 images_publish: images_set_variables
 	TAGSFORBRANCH=default; \
-	if [ $(GIT_BRANCH) = "develop" ]; then \
+	if [ $(GIT_BRANCH) = "master" ]; then \
 		TAGSFORBRANCH="latest";\
 	fi; \
 	for repository in $(tagged_image_list); do \
