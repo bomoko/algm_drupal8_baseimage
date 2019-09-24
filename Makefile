@@ -19,7 +19,6 @@ images_set_variables: images_check_env
 	$(eval docker_build_tag := "buildtag_$(BUILD_NUMBER)")
 	$(eval tagged_image_list := $(shell docker images | grep "$(docker_build_tag)" | cut -d" " -f1 | cat))
 	$(eval git_tag_for_current_branch := $(shell git tag --points-at)) #will be non-empty if HEAD is tagged
-	$(eval docker_networks := $(shell docker network inspect amazeeio-network | grep -o '\"Name\": \"[^\"]*' | sed 's/^.*: //' | sed 's/"//g' | cat))
 
 # This target is simply a test of the above
 .PHONY: images_echo_variables
@@ -27,18 +26,22 @@ images_echo_variables: images_set_variables
 	echo $(docker_build_tag)
 	echo $(tagged_image_list)
 	echo $(git_tag_for_current_branch)
+
+# Set some targets for the build step.
+.PHONY: images_set_build_variables
+images_set_build_variables: images_check_env
+	$(eval docker_networks := $(shell docker network inspect amazeeio-network | grep -o '\"Name\": \"[^\"]*' | sed 's/^.*: //' | sed 's/"//g' | cat))
+	$(eval has_io_network := $(shell echo $(docker_networks) | tr ' ' '\n' | grep -c "amazeeio-network"))
+
+.PHONY: images_echo_build_variables
+images_echo_build_variables: images_set_build_variables
 	echo $(docker_networks)
+	echo $(has_io_network)
 
 # This target will build out the images, passing the correct environment vars to fill out repo and tags
 .PHONY: images_build
-images_build: images_set_variables
-	HAS_IO_NETWORK=false; \
-	for docker_network in $(docker_networks); do \
-		if [ $$docker_network = "amazeeio-network" ]; then \
-			HAS_IO_NETWORK=true;\
-		fi; \
-	done; \
-	if [ $$HAS_IO_NETWORK = false ]; then \
+images_build: images_set_build_variables
+	if [ "$(has_io_network)" = 0 ]; then \
 		docker network create amazeeio-network; \
 	fi; \
 	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose up -d --build; \
