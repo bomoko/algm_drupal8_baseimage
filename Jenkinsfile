@@ -52,21 +52,15 @@
         """
       }
     }
+    */
     stage('Verification') { //This stage needs to be extended - in particular, we should be running a basic site installation to ensure that this base image actually works
       steps {
         sh '''
-        docker-compose exec -T cli drush status
-        docker-compose exec -T cli curl http://nginx:8080 -v
-        if [ $? -eq 0 ]; then
-          echo "OK!"
-        else
-          echo "FAIL"
-          /bin/false
-        fi
-        docker-compose down
+        make images_test
         '''
       }
     }
+    /*
     stage('Docker Push') {
       steps {
         sh '''
