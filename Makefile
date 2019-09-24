@@ -53,7 +53,7 @@ images_build: images_set_build_variables
 .PHONY: images_test
 images_test: images_set_variables
 	docker-compose exec cli drush status bootstrap | grep -q Successful; \
-#	docker-compose exec cli php /app/web/core/scripts/run-tests.sh --browser --verbose --url http://drupal8.docker.amazee.io --sqlite ../var/www/html/results/simpletest.sqlite; \
+	#docker-compose exec cli php /app/web/core/scripts/run-tests.sh --browser --verbose --php /usr/local/bin/php --url http://drupal8.docker.amazee.io --sqlite ../var/www/html/results/simpletest.sqlite --list; \
 
 # This target will iterate through all images and tags, pushing up versions of all with approriate tags
 .PHONY: images_publish
