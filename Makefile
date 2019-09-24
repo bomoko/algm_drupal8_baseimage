@@ -46,10 +46,11 @@ images_build: images_set_build_variables
 	if [ "$(has_io_network)" = 0 ]; then \
 		docker network create amazeeio-network; \
 	fi; \
-	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose up -d --build;
+	docker-compose config -q; \
+	docker-compose down; \
+	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose up -d --build; \
 	docker-compose exec cli drush site-install --verbose config_installer config_installer_sync_configure_form.sync_directory=/app/config/sync/ --yes; \
 	docker-compose exec cli drush cr; \
-	docker-compose exec cli composer require drupal/admin_toolbar drupal/cdn drupal/password_policy drupal/pathauto drupal/ultimate_cron drupal/redis; \
 	docker-compose exec cli drush en admin_toolbar cdn password_policy pathauto ultimate_cron redis -y;
 
 .PHONY: images_test
