@@ -30,9 +30,10 @@
         '''
       }
     }
-    stage('Waiting') {
+    stage('Start images') {
       steps {
         sh """
+        make images_start
         sleep 5s
         """
       }
