@@ -38,7 +38,7 @@ images_start_network: images_set_build_variables
 	fi;
 
 .PHONY: images_start
-images_start: images_set_build_variables
+images_start: images_set_build_variables images_start_network
 	docker-compose config -q; \
 	docker-compose down; \
 	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose up -d; \
