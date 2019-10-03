@@ -34,7 +34,8 @@
         "drupal/cdn": "^3.3",
         "drupal/password_policy": "^3.0@alpha",
         "drupal/pathauto": "^1.4",
-        "drupal/ultimate_cron": "^2.0@alpha"
+        "drupal/ultimate_cron": "^2.0@alpha",
+	"drupal/lagoon_logs": "*"
     },
     "require-dev": {
         "behat/mink": "~1.7",
