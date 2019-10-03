@@ -9,10 +9,7 @@ x-volumes:
   &default-volumes
     # Define all volumes you would like to have real-time mounted into the docker containers
     volumes:
-      - .:/test:delegated
-      # Todo: This doesn't work with Docker-in-Docker, it mounts the wrong mount point!
-      # - "/Users/dennisarslan/Dropbox/Amazee/workspace:/app:delegated"
-      # - .:/app:delegated
+      - .:/app:delegated
 
 x-environment:
   &default-environment
