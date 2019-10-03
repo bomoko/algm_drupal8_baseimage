@@ -30,6 +30,7 @@
         '''
       }
     }
+    /*
     stage('Start images') {
       steps {
         sh """
@@ -45,6 +46,7 @@
         '''
       }
     }
+    */
     stage('Docker Push') {
     steps {
         sh '''
