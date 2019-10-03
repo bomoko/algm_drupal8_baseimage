@@ -7,6 +7,9 @@
 /web/profiles/contrib/
 /web/libraries/
 
+# Ignore any composer.lock files generated - these are not used by the build pipeline
+composer.lock
+
 # Ignore Drupal's file directory
 /web/sites/*/files/
 
