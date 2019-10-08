@@ -55,8 +55,6 @@ This second step will go through the motions of generating the semilock file.
 You should, then, see several files ready to be committed to the repo - your composer.true.json, and composer.json (the semilock file).
 
 
-
-
 ### Understanding how Images are tagged
 
 There can be multiple tags per image.
@@ -81,69 +79,6 @@ called a semilock file.
 In order to be able to generate a composer.json semilock file, we need an _actual_ composer.json file to build from.
 In our base image we keep the loosely versioned composer.json in the file composer.true.json - this is the canonical
 composer.json and is the file that should be edited when, for instance, new modules are required to be added, etc.
-
-# TODO: remove stuff that doesn't make sense below this ...
-
-
-## Local environment setup
-
-1. Checkout project repo and confirm the path is in docker's file sharing config - https://docs.docker.com/docker-for-mac/#file-sharing
-
-```
-git clone https://github.com/amazeeio/drupal-example.git drupal8-lagoon && cd $_
-```
-
-2. Make sure you don't have anything running on port 80 on the host machine (like a web server) then run `pygmy up`
-
-3. Build and start the build images
-
-```
-docker-compose up -d
-docker-compose exec cli composer install
-```
-
-4. Visit the new site @ `http://drupal-example.docker.amazee.io`
-
-* If any steps fail you're safe to rerun from any point,
-starting again from the beginning will just reconfirm the changes.
-
-## What does the template do?
-
-When installing the given `composer.json` some tasks are taken care of:
-
-* Drupal will be installed in the `web`-directory.
-* Autoloader is implemented to use the generated composer autoloader in `vendor/autoload.php`,
-  instead of the one provided by Drupal (`web/vendor/autoload.php`).
-* Modules (packages of type `drupal-module`) will be placed in `web/modules/contrib/`
-* Themes (packages of type `drupal-theme`) will be placed in `web/themes/contrib/`
-* Profiles (packages of type `drupal-profile`) will be placed in `web/profiles/contrib/`
-* Creates the `web/sites/default/files`-directory.
-* Latest version of drush is installed locally for use at `vendor/bin/drush`.
-* Latest version of [Drupal Console](http://www.drupalconsole.com) is installed locally for use at `vendor/bin/drupal`.
-
-## Updating Drupal Core
-
-This project will attempt to keep all of your Drupal Core files up-to-date; the
-project [drupal-composer/drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold)
-is used to ensure that your scaffold files are updated every time drupal/core is
-updated. If you customize any of the "scaffolding" files (commonly .htaccess),
-you may need to merge conflicts if any of your modified files are updated in a
-new release of Drupal core.
-
-Follow the steps below to update your core files.
-
-1. Run `composer update drupal/core --with-dependencies` to update Drupal Core and its dependencies.
-1. Run `git diff` to determine if any of the scaffolding files have changed.
-   Review the files for any changes and restore any customizations to
-  `.htaccess` or `robots.txt`.
-1. Commit everything all together in a single commit, so `web` will remain in
-   sync with the `core` when checking out branches or running `git bisect`.
-1. In the event that there are non-trivial conflicts in step 2, you may wish
-   to perform these steps on a separate branch, and use `git merge` to combine the
-   updated core files with your customized files. This facilitates the use
-   of a [three-way merge tool such as kdiff3](http://www.gitshah.com/2010/12/how-to-setup-kdiff-as-diff-tool-for-git.html). This setup is not necessary if your changes are simple;
-   keeping all of your modifications at the beginning or end of the file is a
-   good strategy to keep merges easy.
 
 ## FAQ
 
