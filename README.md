@@ -1,11 +1,11 @@
-# Modular dockerized Drupal distribution and build pipeline from Jenkins
+# Build and manage base images for Lagoon
 
+
+## Acknowledgements
 The following draws heavily (and, in fact, is a "fork" of) [Denpal](https://github.com/dennisarslan/denpal).
+It is based on the [original Drupal Composer Template](https://github.com/drupal-composer/drupal-project), but includes everything necessary to run on amazee.io (either the local development environment or on amazee.io servers.)
 
-# Composer template for Drupal projects hosted on amazee.io
 
-This project template should provide a kickstart for managing your site
-dependencies with [Composer](https://getcomposer.org/). It is based on the [original Drupal Composer Template](https://github.com/drupal-composer/drupal-project), but includes everything necessary to run on amazee.io (either the local development environment or on amazee.io servers.)
 
 
 ## Requirements
