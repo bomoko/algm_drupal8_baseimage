@@ -1,17 +1,32 @@
 # Build and manage base images for Lagoon
 
 
-## Acknowledgements
-The following draws heavily (and, in fact, is a "fork" of) [Denpal](https://github.com/dennisarslan/denpal).
-It is based on the [original Drupal Composer Template](https://github.com/drupal-composer/drupal-project), but includes everything necessary to run on amazee.io (either the local development environment or on amazee.io servers.)
-
-
-
-
 ## Requirements
 
+* This system is currently configured to be deployed to Jenkins - however, since most of the build scripts are contained in Makefiles, having it run on some other CI/CD system should be trivial.
 * [docker](https://docs.docker.com/install/).
 * [pygmy](https://docs.amazee.io/local_docker_development/pygmy.html) `gem install pygmy` (you might need sudo for this depending on your ruby configuration)
+* A docker hub repository
+
+# Understanding the build process
+
+There are several parts to the build process.
+
+## Understanding the semilock file
+
+One of the challenges with allowing derived images to add their own modules while
+simultaneously having a "base" with fixed module versions (Drupal core, some contrib modules etc.)
+is that enforcing the base image's versions at the derived image's build time becomes difficult.
+
+The way we've approached this is to follow the example of Webflo's [drupal-core-strict](https://github.com/webflo/drupal-core-strict) project,
+which produces composer.json files with _exact_ versions of modules - this allows a composer.json file
+to act as if it was a lock file. This kind of composer.json file with fixed module versions is what we've
+called a semilock file.
+
+In order to be able to generate a composer.json semilock file, we need an _actual_ composer.json file to build from.
+In our base image we keep the loosely versioned composer.json in the file composer.true.json - this is the canonical
+composer.json and is the file that should be edited when, for instance, new modules are required to be added, etc.
+
 
 ## Local environment setup
 
@@ -75,32 +90,6 @@ Follow the steps below to update your core files.
 
 ## FAQ
 
-### Should I commit the contrib modules I download?
-
-Composer recommends **no**. They provide [argumentation against but also
-workarounds if a project decides to do it anyway](https://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).
-
-### Should I commit the scaffolding files?
-
-The [drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold) plugin can download the scaffold files (like
-index.php, update.php, …) to the web/ directory of your project. If you have not customized those files you could choose
-to not check them into your version control system (e.g. git). If that is the case for your project it might be
-convenient to automatically run the drupal-scaffold plugin after every install or update of your project. You can
-achieve that by registering `@drupal-scaffold` as a post-install and post-update command in your composer.json:
-
-```json
-"scripts": {
-    "drupal-scaffold": "DrupalComposer\\DrupalScaffold\\Plugin::scaffold",
-    "post-install-cmd": [
-        "@drupal-scaffold",
-        "..."
-    ],
-    "post-update-cmd": [
-        "@drupal-scaffold",
-        "..."
-    ]
-},
-```
 ### How can I apply patches to downloaded modules?
 
 If you need to apply patches (depending on the project being modified, a pull
@@ -118,3 +107,7 @@ section of composer.json:
     }
 }
 ```
+
+## Acknowledgements
+The following draws heavily (and, in fact, is a "fork" of) [Denpal](https://github.com/dennisarslan/denpal).
+It is based on the [original Drupal Composer Template](https://github.com/drupal-composer/drupal-project), but includes everything necessary to run on amazee.io (either the local development environment or on amazee.io servers.)
