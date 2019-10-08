@@ -10,7 +10,62 @@
 
 # Understanding the build process
 
-There are several parts to the build process.
+There are several parts to the build process. All of the major build steps are represented in the Makefile which means that most can be tested locally (this is important when building new versions of the base image)
+
+### Makefile and build assumptions
+
+If you're planning on running this locally (or are setting up a build process on some automation platform) there are some minimum environment variables that need to be present to build at all
+
+Minimally you'll need to ensure that you set
+* BUILD_NUMBER: This is used in tagging the images being built - in Jenkins it's provided by default.
+* DOCKER_REPO: Like BUILD_NUMBER, this is used in tagging images
+* GIT_BRANCH: is used primarily to tag built images that are pushed to the docker repo
+
+
+Practically, this means that if you're running any of the make targets on your local machine
+you'll want to ensure that these are available in the environment - even if this is just setting them like so:
+
+`GIT_BRANCH=example_branch_name DOCKER_REPO=your_docker_repo_here BUILD_NUMBER=<some_integer> make images_remove`
+
+### Makefile targets
+
+The most important targets are the following
+
+* images_build : Will, given the environment variables, build and tag the images for publication
+* images_publish : pushes built images to a docker repo
+* images_start : Will start the images for testing, etc.
+* images_test: Runs basic tests against images 
+
+## Example workflow for building a new release
+
+There are two parts to building a new release. The first part requires human intervention - this would be, for example,
+adding a new module to the base image (via the composer.true.json file) and tagging the commit.
+
+
+If we wanted to add a new module to the base image, assuming that you have pulled the base image down on to your local machine, the process would look something like this:
+
+`COMPOSER=composer.true.json composer require drupal/lagoon_logs --no-update`
+
+followed by
+
+`GIT_BRANCH=tester DOCKER_REPO=algmprivsecops BUILD_NUMBER=1 make semilock_build`
+
+This second step will go through the motions of generating the semilock file.
+
+You should, then, see several files ready to be committed to the repo - your composer.true.json, and composer.json (the semilock file).
+
+
+
+
+### Understanding how Images are tagged
+
+There can be multiple tags per image.
+
+Any change pushed to the `master` branch will result in a build that is tagged as `latest` for images.
+
+Further, if there are any tags on the commit the images are being built from, this will result in a tagged image being
+ pushed to the docker hub.
+
 
 ## Understanding the semilock file
 
@@ -26,6 +81,8 @@ called a semilock file.
 In order to be able to generate a composer.json semilock file, we need an _actual_ composer.json file to build from.
 In our base image we keep the loosely versioned composer.json in the file composer.true.json - this is the canonical
 composer.json and is the file that should be edited when, for instance, new modules are required to be added, etc.
+
+# TODO: remove stuff that doesn't make sense below this ...
 
 
 ## Local environment setup
