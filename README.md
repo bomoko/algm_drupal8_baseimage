@@ -35,6 +35,7 @@ The most important targets are the following
 * images_publish : pushes built images to a docker repo
 * images_start : Will start the images for testing, etc.
 * images_test: Runs basic tests against images 
+* images_remove: removes previously build images, given the build environment variables
 
 ## Example workflow for building a new release
 
