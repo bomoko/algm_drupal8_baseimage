@@ -64,6 +64,14 @@ Any change pushed to the `master` branch will result in a build that is tagged a
 Further, if there are any tags on the commit the images are being built from, this will result in a tagged image being
  pushed to the docker hub.
 
+## How do derived images relate to this base image
+
+All derived images should pull in the composer.lock file (via packagist or github) so that they are delivered the most
+recent versions of the base packages.
+
+Further, at the derived image, there is a call to the script `/build/pre_composer` which can be used by the base image to
+run scripts/updates/etc. downstream in the derived images. For instance, by default, it should run when any package is
+updated or installed at the derived image, the `pre_composer` script will then update the base image package.
 
 ## Understanding the semilock file
 

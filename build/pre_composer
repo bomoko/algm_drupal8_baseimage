@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# We've moved the update logic into a separate file, rather than calling the command directly
+# this allows us to inject/update the logic of the derived image
+composer update --no-scripts --with-dependencies amazeelabs/algm_drupal8_baseimage
