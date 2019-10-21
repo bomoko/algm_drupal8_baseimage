@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #USAGE: lagoon_deploy LAGOON_PROJECT LAGOON_ENVIRONMENT [GRAPHQL_ENDPOINT] [LAGOON_SSH_ENDPOINT] [LAGOON_SSH_ENDPOINT] [LAGOON_PORT]
 #example using defaults `>lagoon_deploy umami-demo master` 
@@ -18,6 +18,8 @@ lagoon_deploy() {
 	LAGOON_SSH_ENDPOINT=${4:-"ssh.lagoon.amazeeio.cloud"}
 	LAGOON_PORT=${5:-32222}
 
+	set +x
+
 	JWT_PRE_CLEAN=$(ssh -p $LAGOON_PORT -o LogLevel=ERROR -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t lagoon@$LAGOON_SSH_ENDPOINT token)
 	
 	if [ ! $? = 0 ]; then 
@@ -33,13 +35,12 @@ lagoon_deploy() {
 	GRAPHQL_QUERY='{ "query": "mutation { deployEnvironmentLatest(input: { environment: { name: \"'"$LAGOON_ENVIRONMENT"'\" project: { name: \"'"$LAGOON_PROJECT"'\" } } }) }" }'
 
 	RES=$(curl -X POST -H 'Content-Type: application/json' -H "$AUTHHEADER" -d ''"$GRAPHQL_QUERY"'' $GRAPHQL_ENDPOINT 2>/dev/null)
-
+	
 	echo $RES
-
-	if [[ $RES =~ .*success* ]]; then 
-		exit 0; 
-	else
-		exit 1;
-	fi
+	set -x
+	case $RES in
+		*success*) exit 0;;
+		**) exit 1;;
+	esac
 }
 
