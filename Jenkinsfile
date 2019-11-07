@@ -30,6 +30,7 @@
         '''
       }
     }
+/*
     stage('Verification') {
       steps {
         sh '''
@@ -37,6 +38,7 @@
         '''
       }
     }
+*/
     stage('Docker Push') {
     steps {
         sh '''
