@@ -5,12 +5,6 @@ x-lagoon-project:
   &lagoon-project drupal8
   &cli-image $DOCKER_REPO/drupal8:$BUILDTAG
 
-x-volumes:
-  &default-volumes
-    # Define all volumes you would like to have real-time mounted into the docker containers
-    volumes:
-      - .:/app:delegated
-
 x-environment:
   &default-environment
     LAGOON_PROJECT: *lagoon-project
@@ -38,7 +32,6 @@ services:
       lagoon.type: cli-persistent
       lagoon.persistent.name: nginx # mount the persistent storage of nginx into this container
       lagoon.persistent: /app/web/sites/default/files/ # location where the persistent storage should be mounted
-    << : *default-volumes # loads the defined volumes from the top
     user: root
     # volumes_from: # mount the ssh-agent from the pygmy or cachalot ssh-agent
     #  - container:amazeeio-ssh-agent
@@ -55,7 +48,6 @@ services:
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.persistent: /app/web/sites/default/files/ # define where the persistent storage should be mounted too
-    << : *default-volumes # loads the defined volumes from the top
     << : *default-user # uses the defined user from top
     depends_on:
       - cli # basically just tells docker-compose to build the cli first
@@ -79,7 +71,6 @@ services:
       lagoon.type: nginx-php-persistent
       lagoon.name: nginx # we want this service be part of the nginx pod in Lagoon
       lagoon.persistent: /app/web/sites/default/files/ # define where the persistent storage should be mounted too
-    << : *default-volumes # loads the defined volumes from the top
     << : *default-user # uses the defined user from top
     depends_on:
       - cli # basically just tells docker-compose to build the cli first
