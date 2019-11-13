@@ -45,10 +45,7 @@ images_start: images_set_build_variables images_start_network
 
 .PHONY: images_test
 images_test: images_start
-	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose exec -T cli composer install; \
-	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose exec -T cli drush -r /app/web site-install --verbose config_installer config_installer_sync_configure_form.sync_directory=/app/config/sync/ --yes; \
-	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose exec -T cli drush cr; \
-	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) docker-compose exec -T cli ./build/check_installation.sh;
+	DOCKER_REPO=$$DOCKER_REPO BUILDTAG=$(docker_build_tag) ./build/images_test.sh;
 
 # This target will iterate through all images and tags, pushing up versions of all with approriate tags
 .PHONY: images_publish
