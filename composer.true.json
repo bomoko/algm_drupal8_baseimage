@@ -29,7 +29,6 @@
         "drupal/search_api_solr": "^1.2",
         "drupal/varnish_purge": "^1.10",
         "drupal/purge": "^3.0",
-        "wikimedia/composer-merge-plugin": "^1.4",
         "drupal/admin_toolbar": "^1.27",
         "drupal/cdn": "^3.3",
         "drupal/password_policy": "^3.0@alpha",
@@ -71,21 +70,6 @@
         ]
     },
     "extra": {
-        "merge-plugin": {
-            "include": [
-                "composer.dist.json",
-                "composer.local.json",
-                "extensions/*/composer.json",
-                "depimages/*/composer.json"
-            ],
-            "recurse": false,
-            "replace": false,
-            "ignore-duplicates": false,
-            "merge-dev": false,
-            "merge-extra": false,
-            "merge-extra-deep": false,
-            "merge-scripts": false
-        },
         "installer-paths": {
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
